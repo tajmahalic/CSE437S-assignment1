@@ -12,13 +12,10 @@ public class Player {
 		this.color = color;
 	}
 	
-	//allows the user to use to left and right arrow keys to pick which column they want to
-	//	place their piece in
+	//TODO: Add functionality to allow the user to use to left and right arrow keys 
+	//	to pick which column they want to place their piece in
 	public int pickPiece(Board b) {
-		
-		
-		b.setCurrentPlayer(this);
-		
+	
 		Scanner scan = new Scanner(System.in);
 		
 		int choice;
@@ -34,7 +31,7 @@ public class Player {
 			
 			choice = scan.nextInt();
 			
-			if (choice < 0 || choice > b.getBoardWidth()) {
+			if (choice < 0 || choice > b.getBoardWidth()-1) {
 				System.out.println("Input must be between 0 and " + b.getBoardWidth() + "!");
 				continue;
 			}

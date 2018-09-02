@@ -1,5 +1,8 @@
 package connectFour;
 
+import java.util.Arrays;
+import java.util.Scanner;
+
 public class Board {
 
 	private Piece[][] board;
@@ -15,11 +18,9 @@ public class Board {
 		this.currPlayer = null;
 		
 		
-		
-		//Add 1 Height Row for visualizing piece placement
 		this.board = new Piece[width][height];
 		
-		Piece emptyPiece = new Piece(-1);
+		Piece emptyPiece = new Piece(0);
 		
 		//Initializes Board Values to emptyPiece
 			for (int i = 0; i < board.length; i++) {
@@ -27,7 +28,26 @@ public class Board {
 					board[i][j] = emptyPiece;
 				}
 			}
+	}
+	
+	//Makes board from piece array and current player p
+	public Board(Piece[][] pieces, Player p) {
+		this.BOARDWIDTH = pieces.length;
+		this.BOARDHEIGHT = pieces[0].length;
+		this.currPlayer = p;
 		
+		this.board = new Piece[BOARDWIDTH][BOARDHEIGHT];
+		
+		for (int i = 0; i < BOARDWIDTH; i++) {
+			for (int j = 0; j < BOARDHEIGHT; j++) {
+				board[i][j] = new Piece(pieces[i][j]);
+			}
+		}
+	}
+	
+	//Makes copy of board b
+	public Board(Board b) {
+		this(b.getPieces(), b.getCurrentPlayer());
 	}
 	
 	public boolean isDone() {
@@ -107,13 +127,21 @@ public class Board {
 		return true;
 	}
 	
-	//just drop the piece into the board
+	//Makes a copy of the current board and returns the board after placing a piece at width
+	public Board peekAtNextBoard(int width, int color) {
+		Board newBoard = new Board(this);
+		newBoard.addPiece(width, color);
+		return newBoard;
+	}
+	
+	//adds piece to the current board
 	public void addPiece(int width, int color) {
 		
 		Piece p = new Piece(color);
 		
 		for (int i = 0; i < BOARDHEIGHT; i++) {
 			if (squareIsEmpty(width, i)) {
+				
 				board[width][i] = new Piece(color);
 				System.out.println("Added to " + width + " " + i);
 				return;
@@ -127,13 +155,23 @@ public class Board {
 	
 	public boolean squareIsEmpty(int width, int height) {
 		
-		Piece emptyPiece = new Piece(-1);
+		Piece emptyPiece = new Piece(0);
 		
 		return board[width][height].equals(emptyPiece);
 	}
 	
-	public void printBoard() {
+	public String toString() {
+		String output = "";
+		String newLine = System.getProperty("line.separator");
+		for (int h = BOARDHEIGHT -1; h >= 0; h--) {
+			for (int w = 0; w < BOARDWIDTH; w++) {
+				output += board[w][h].getColor() + " ";
+			}
+			output += newLine;
+		}
+		output += newLine;
 		
+		return output;
 	}
 	
 	public int getBoardHeight() {
@@ -142,6 +180,10 @@ public class Board {
 	
 	public int getBoardWidth() {
 		return BOARDWIDTH;
+	}
+	
+	public Piece[][] getPieces() {
+		return board;
 	}
 
 	public void setCurrentPlayer(Player player) {
