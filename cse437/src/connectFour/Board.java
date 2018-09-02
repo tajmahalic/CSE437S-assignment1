@@ -1,19 +1,20 @@
 package connectFour;
 
+import java.util.ArrayList;
+
 public class Board {
 
 	private Piece[][] board;
 	private int BOARDWIDTH;
 	private int BOARDHEIGHT;
 	private Player currPlayer;
-	
+
 	
 	public Board(int width, int height) {
 		
 		this.BOARDWIDTH = width;
 		this.BOARDHEIGHT = height;
 		this.currPlayer = null;
-		
 		
 		
 		//Add 1 Height Row for visualizing piece placement
@@ -110,7 +111,7 @@ public class Board {
 	//just drop the piece into the board
 	public void addPiece(int width, int color) {
 		
-		Piece p = new Piece(color);
+		//Piece p = new Piece(color);
 		
 		for (int i = 0; i < BOARDHEIGHT; i++) {
 			if (squareIsEmpty(width, i)) {

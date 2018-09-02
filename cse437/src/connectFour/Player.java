@@ -1,5 +1,10 @@
 package connectFour;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.Scanner;
 
 public class Player {
@@ -25,11 +30,29 @@ public class Player {
 		
 		while (true) {
 			System.out.print("Where would you like to move?: ");
-
+			
 			if (!scan.hasNextInt()) {
-				System.out.println("Input must be a number!");
-				scan.next();
-				continue;
+				String line = scan.nextLine();
+				System.out.println(line);
+				if (line.equals("save as")) {
+					System.out.println("Please enter file name (.txt) to save to.");
+					line = scan.nextLine();
+					if (line.endsWith(".txt")) {
+						try {
+							Game.saveGame(line);
+						} catch (IOException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
+					} else {
+						System.out.println("Invalid file name.");
+					}
+					continue;
+				} else {
+					System.out.println("Input must be a number!");
+					scan.next();
+					continue;
+				}
 			}
 			
 			choice = scan.nextInt();
@@ -50,7 +73,7 @@ public class Player {
 		}
 		
 		System.out.println("Player " + name + " chose column " + choice + ".");
-		
+
 		return choice;
 	}
 	
