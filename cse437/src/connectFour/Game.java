@@ -7,13 +7,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Stream;
 
 public class Game {
 
 	Board gameBoard;
 	
 	ArrayList<Player> players;
+	static List<String> data = new ArrayList<String>();
 	
 	//Colors for Players
 	int RED = 1;
@@ -22,24 +26,19 @@ public class Game {
 	int totalWins;
 	int numTurns;
 	
-	public static void main(String[] args) throws FileNotFoundException, UnsupportedEncodingException {
+	public static void main(String[] args) {
 		
 		Game g = new Game();
 		g.newGame();
-		
-		//TODO: Make option to choose between new game and load game
-		//g.loadGame();
-		
 		g.runGame();
 
 	}
 	
 	public Game() {
-		
 		this.players = new ArrayList<Player>();
 	}
 	
-	public void runGame() throws FileNotFoundException, UnsupportedEncodingException {
+	public void runGame() {
 		
 		//Current Player is the first player added
 		gameBoard.setCurrentPlayer(players.get(0));
@@ -47,7 +46,6 @@ public class Game {
 		while (!gameBoard.isDone()) {
 			numTurns++;
 			nextTurn();
-			saveGame();
 		}
 		
 		
@@ -65,8 +63,21 @@ public class Game {
 	
 	public void newGame() {
 		
-		//ArgsProcessor
 		Scanner scan = new Scanner(System.in);
+		System.out.print("Would you like to load a saved game? (y or n)");
+		
+		String ans = scan.nextLine();
+		while (!ans.equals("y") && !ans.equals("n")) {
+			System.out.print("Would you like to load a saved game? (y or n)");
+			ans = scan.nextLine();
+		}
+		if (ans.equals("y")) {
+			System.out.println("Please enter filename of saved game.");
+			ans = scan.nextLine();
+			if (loadGame(ans)) {
+				return;
+			}
+		}
 		
 		System.out.print("What is your name?: ");
 		String name = scan.nextLine();
@@ -77,72 +88,54 @@ public class Game {
 		players.add(new Player(name, RED));
 		
 		//Computer Player
-		//TODO: Maybe add option for two human players
 		players.add(new ComputerPlayer("Computer", BLACK));
-		
 		for (int i = 0; i < players.size(); i++) {
 			System.out.println("Player " + (i+1) + " is " + players.get(i).getName());
 		}
 		
+		data.add(players.get(0).getName());
+		data.add(players.get(1).getName());
 		
 		totalWins = 0;
 		numTurns = -1;
 	}
 	
 	//if player wants to load a saved game, initialize board
-	public void loadGame(String filename) throws FileNotFoundException {
+	public boolean loadGame(String filename){
 		
-		File file = new File(filename);
-		
-		Scanner scan = new Scanner(file);		
-		
-		int width = scan.nextInt();
-		int height = scan.nextInt();
-		
-		Piece[][] pieces = new Piece[width][height];
-		
-		int heightCount = height -1;
-		
-		//go through each row
-		while (heightCount >= 0) {
-			String row = scan.nextLine();
-			
-			String[] nums = row.split(" ");
-			
-			//and fill board with ints
-			for (int i = 0; i < nums.length; i++) {
-				pieces[i][heightCount] = new Piece(Integer.parseInt(nums[i]));
+		try (Stream<String> stream = Files.lines(Paths.get(filename))) {
+			data = Arrays.asList((String[]) stream.toArray(String[]::new));
+			data = new ArrayList<String>(data);
+			gameBoard = new Board(7,6);
+			players.add(new Player(data.get(0), RED));
+			players.add(new ComputerPlayer(data.get(1), BLACK));
+			for (int i = 2; i < data.size(); i++) {
+				if (i % 2 == 0) {
+					gameBoard.addPiece(Integer.parseInt(data.get(i)), RED);
+				} else {
+					gameBoard.addPiece(Integer.parseInt(data.get(i)), BLACK);
+				}
 			}
-			heightCount--;
+			totalWins = 0;
+			numTurns = data.size() - 3;
+			
+			gameBoard.setCurrentPlayer(players.get(numTurns%2));
+			
+			System.out.println("Game Loaded");
+			System.out.println(gameBoard);
+			
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("No such file. Starting new game...");
+			return false;
 		}
-		
-		//Read in player names
-		String player1Name = scan.next();
-		String player2Name = scan.next();
-		
-		players.add(new Player(player1Name, RED));
-		players.add(new Player(player2Name, BLACK));
-		
-		int currPlayer = scan.nextInt();
-		numTurns = scan.nextInt();
-		
-		gameBoard = new Board(pieces, players.get(currPlayer));
 	}
 	
-	//saves game file (Board, player names, current player, and num turns
-	public void saveGame() throws FileNotFoundException, UnsupportedEncodingException {
-		
-		//filename for saved file
-		PrintWriter writer = new PrintWriter("connect-four-save.txt", "UTF-8");
-		String s = gameBoard.toString();
-		System.out.println(s);
-		writer.println(gameBoard);
-		writer.println(players.get(0).getName());
-		writer.println(players.get(1).getName());
-		writer.println(players.indexOf(gameBoard.getCurrentPlayer()));
-		writer.println(numTurns);
-		
-		writer.close();
+	//saves game file
+	public static void saveGame(String filename) throws IOException {
+		Path saveFile = Paths.get(filename);
+		Files.write(saveFile, data, Charset.forName("UTF-8"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 	}
 
 	
@@ -155,7 +148,7 @@ public class Game {
 		System.out.println("It is " + currPlayer.getName() + "'s turn.");
 		
 		gameBoard.setCurrentPlayer(currPlayer);
-		currPlayer.pickPiece(gameBoard);
+		data.add(Integer.toString(currPlayer.pickPiece(gameBoard)));
 		System.out.println(gameBoard);
 		
 		return true;
