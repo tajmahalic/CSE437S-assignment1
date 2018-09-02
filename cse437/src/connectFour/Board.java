@@ -2,6 +2,7 @@ package connectFour;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.ArrayList;
 
 public class Board {
 
@@ -20,7 +21,7 @@ public class Board {
 		
 		this.board = new Piece[width][height];
 		
-		Piece emptyPiece = new Piece(0);
+		Piece emptyPiece = new Piece(-1);
 		
 		//Initializes Board Values to emptyPiece
 			for (int i = 0; i < board.length; i++) {
@@ -137,11 +138,8 @@ public class Board {
 	//adds piece to the current board
 	public void addPiece(int width, int color) {
 		
-		Piece p = new Piece(color);
-		
 		for (int i = 0; i < BOARDHEIGHT; i++) {
 			if (squareIsEmpty(width, i)) {
-				
 				board[width][i] = new Piece(color);
 				System.out.println("Added to " + width + " " + i);
 				return;
@@ -155,7 +153,7 @@ public class Board {
 	
 	public boolean squareIsEmpty(int width, int height) {
 		
-		Piece emptyPiece = new Piece(0);
+		Piece emptyPiece = new Piece(-1);
 		
 		return board[width][height].equals(emptyPiece);
 	}
