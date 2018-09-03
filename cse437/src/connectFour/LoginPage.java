@@ -1,8 +1,6 @@
 package connectFour;
 
 
-import org.eclipse.swt.widgets.Shell;
-
 import java.awt.TextField;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -18,11 +16,7 @@ import java.awt.Font;
 
 public class LoginPage {
 
-	protected Shell shell;
-
-	/**
-	 * Create contents of the window.
-	 */
+	// Create contents of the window.
 	protected static void createContents() {	
 		JFrame frame = new JFrame("Login Page");
 		JPanel panel = (JPanel) frame.getContentPane();
