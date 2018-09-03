@@ -1,22 +1,27 @@
 package connectFour;
 
+import java.awt.Color;
+
 public class Piece {
 
-	private int color;
+	private Color color;
 	
-	public Piece(int color) {
+	public Piece(Color color) {
 		this.color = color;
 	}
 	
 	public Piece(Piece p) {
 		this.color = p.getColor();
 	}
+	
+	public Piece() {
+		
+	}
 
-	public int getColor() {
+	public Color getColor() {
 		return color;
 	}
 	
-	//Method to see if two pieces are equal
 	@Override
 	public boolean equals(Object o) {
 		

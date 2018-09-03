@@ -1,8 +1,6 @@
 package connectFour;
 
-import java.util.Arrays;
-import java.util.Scanner;
-import java.util.ArrayList;
+import java.awt.Color;
 
 public class Board {
 
@@ -19,9 +17,11 @@ public class Board {
 		this.currPlayer = null;
 		
 		
+		
+		//Add 1 Height Row for visualizing piece placement
 		this.board = new Piece[width][height];
 		
-		Piece emptyPiece = new Piece(0);
+		Piece emptyPiece = new Piece();
 		
 		//Initializes Board Values to emptyPiece
 			for (int i = 0; i < board.length; i++) {
@@ -29,6 +29,7 @@ public class Board {
 					board[i][j] = emptyPiece;
 				}
 			}
+		
 	}
 	
 	//Makes board from piece array and current player p
@@ -46,12 +47,8 @@ public class Board {
 		}
 	}
 	
-	//Makes copy of board b
-	public Board(Board b) {
-		this(b.getPieces(), b.getCurrentPlayer());
-	}
-	
 	public boolean isDone() {
+		System.out.println("IN ISDONE....  "+checkWin());
 		return checkWin() || checkTie();
 	}
 	
@@ -128,22 +125,17 @@ public class Board {
 		return true;
 	}
 	
-	//Makes a copy of the current board and returns the board after placing a piece at width
-	public Board peekAtNextBoard(int width, int color) {
-		Board newBoard = new Board(this);
-		newBoard.addPiece(width, color);
-		return newBoard;
-	}
-	
-	//adds piece to the current board
-	public void addPiece(int width, int color) {
+	//just drop the piece into the board
+	public int addPiece(int width, Color color) {
 		
 		for (int i = 0; i < BOARDHEIGHT; i++) {
 			if (squareIsEmpty(width, i)) {
 				board[width][i] = new Piece(color);
-				return;
+				System.out.println("Added to " + width + " " + i);
+				return i;
 			}
 		}
+		return -1;
 	}
 	
 	public boolean checkIfColIsFull(int width) {
@@ -152,9 +144,13 @@ public class Board {
 	
 	public boolean squareIsEmpty(int width, int height) {
 		
-		Piece emptyPiece = new Piece(0);
+		Piece emptyPiece = new Piece();
 		
 		return board[width][height].equals(emptyPiece);
+	}
+	
+	public void printBoard() {
+		
 	}
 	
 	public String toString() {
@@ -177,10 +173,6 @@ public class Board {
 	
 	public int getBoardWidth() {
 		return BOARDWIDTH;
-	}
-	
-	public Piece[][] getPieces() {
-		return board;
 	}
 
 	public void setCurrentPlayer(Player player) {

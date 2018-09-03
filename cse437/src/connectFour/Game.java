@@ -1,5 +1,7 @@
 package connectFour;
 
+import java.awt.Color;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -8,112 +10,79 @@ import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
 import java.util.stream.Stream;
+
+import java.util.List;
 
 public class Game {
 
 	Board gameBoard;
 	
 	ArrayList<Player> players;
+	String name;
 	static List<String> data = new ArrayList<String>();
-	
-	//Colors for Players
-	int RED = 1;
-	int BLACK = 2;
 	
 	int totalWins;
 	int numTurns;
 	
-	public static void main(String[] args) {
+	public Game(String name) {
 		
-		Game g = new Game();
-		g.newGame();
-		g.runGame();
-
-	}
-	
-	public Game() {
 		this.players = new ArrayList<Player>();
+		this.name = name;
 	}
 	
 	public void runGame() {
 		
-		//Current Player is the first player added
 		gameBoard.setCurrentPlayer(players.get(0));
-		
-		while (!gameBoard.isDone()) {
+		for(int i = 0 ; i<2 ; i++) {
 			numTurns++;
 			nextTurn();
+			if(gameBoard.isDone()) {
+				System.out.println("GAME IS DONE");
+				Player winner = gameBoard.getCurrentPlayer();
+				System.out.println(winner.getName() + " won the game!");
+				WinGame dialog = new WinGame(winner.getName(),players.get(0).name);
+				dialog.setVisible(true);
+				Connect4.disableConnect4();
+			}
 		}
-		
-		
-		if (gameBoard.checkTie()) {
-			System.out.println("Tied Game! No Winners!");
-			return;
-		}
-		
-		//else if winner
-		Player winner = gameBoard.getCurrentPlayer();
-		
-		System.out.println(winner.getName() + " won the game!");
-		return;
 	}
 	
 	public void newGame() {
 		
-		Scanner scan = new Scanner(System.in);
-		System.out.print("Would you like to load a saved game? (y or n)");
-		
-		String ans = scan.nextLine();
-		while (!ans.equals("y") && !ans.equals("n")) {
-			System.out.print("Would you like to load a saved game? (y or n)");
-			ans = scan.nextLine();
-		}
-		if (ans.equals("y")) {
-			System.out.println("Please enter filename of saved game.");
-			ans = scan.nextLine();
-			if (loadGame(ans)) {
-				return;
-			}
-		}
-		
-		System.out.print("What is your name?: ");
-		String name = scan.nextLine();
-		
+		//ArgsProcessor
 		gameBoard = new Board(7,6);
+		players.add(new Player(name, Color.BLUE));
+		players.add(new ComputerPlayer("Computer", Color.RED));
 		
-		//Human Player
-		players.add(new Player(name, RED));
-		
-		//Computer Player
-		players.add(new ComputerPlayer("Computer", BLACK));
 		for (int i = 0; i < players.size(); i++) {
 			System.out.println("Player " + (i+1) + " is " + players.get(i).getName());
 		}
 		
-		data.add(players.get(0).getName());
-		data.add(players.get(1).getName());
 		
 		totalWins = 0;
 		numTurns = -1;
+		data.add(players.get(0).getName());
+		data.add(players.get(1).getName());
 	}
 	
+	
 	//if player wants to load a saved game, initialize board
-	public boolean loadGame(String filename){
+	public boolean loadGame(File file){
 		
-		try (Stream<String> stream = Files.lines(Paths.get(filename))) {
+		try (Stream<String> stream = Files.lines(Paths.get(file.getPath()))) {
 			data = Arrays.asList((String[]) stream.toArray(String[]::new));
 			data = new ArrayList<String>(data);
 			gameBoard = new Board(7,6);
-			players.add(new Player(data.get(0), RED));
-			players.add(new ComputerPlayer(data.get(1), BLACK));
+			players.add(new Player(data.get(0), Color.BLUE));
+			players.add(new ComputerPlayer(data.get(1), Color.RED));
 			for (int i = 2; i < data.size(); i++) {
 				if (i % 2 == 0) {
-					gameBoard.addPiece(Integer.parseInt(data.get(i)), RED);
+				   int col = gameBoard.addPiece(Integer.parseInt(data.get(i)), Color.BLUE);
+				   Connect4.fillConnect4(data.get(i),col,Color.BLUE);
 				} else {
-					gameBoard.addPiece(Integer.parseInt(data.get(i)), BLACK);
+				   int col = gameBoard.addPiece(Integer.parseInt(data.get(i)), Color.RED);
+				   Connect4.fillConnect4(data.get(i),col, Color.RED);
 				}
 			}
 			totalWins = 0;
@@ -132,12 +101,24 @@ public class Game {
 		}
 	}
 	
+	
+	
 	//saves game file
-	public static void saveGame(String filename) throws IOException {
-		Path saveFile = Paths.get(filename);
+	public void saveGame(File file) throws IOException {
+		Path saveFile = Paths.get(file.getPath());
+		System.out.println();
+		System.out.println();
+		System.out.println("LIST STRING IS....");
+		String listString = "";
+
+		for (String s : data)
+		{
+		    listString += s + "\t";
+		}
+
+		System.out.println(listString);
 		Files.write(saveFile, data, Charset.forName("UTF-8"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 	}
-
 	
 	//alternate between computer and real player
 	public boolean nextTurn() {
@@ -146,15 +127,11 @@ public class Game {
 		Player currPlayer = players.get(numTurns % 2);
 		
 		System.out.println("It is " + currPlayer.getName() + "'s turn.");
-		
 		gameBoard.setCurrentPlayer(currPlayer);
 		data.add(Integer.toString(currPlayer.pickPiece(gameBoard)));
 		System.out.println(gameBoard);
 		
+		
 		return true;
 	}	
-	
-	public int getNumTurns() {
-		return numTurns;
-	}
 }
