@@ -8,13 +8,14 @@ public class Board {
 	private int BOARDWIDTH;
 	private int BOARDHEIGHT;
 	private Player currPlayer;
-	
+	private Player otherPlayer;
 	
 	public Board(int width, int height) {
 		
 		this.BOARDWIDTH = width;
 		this.BOARDHEIGHT = height;
 		this.currPlayer = null;
+		this.otherPlayer = null;
 		
 		
 		
@@ -33,10 +34,11 @@ public class Board {
 	}
 	
 	//Makes board from piece array and current player p
-	public Board(Piece[][] pieces, Player p) {
+	public Board(Piece[][] pieces, Player p, Player other) {
 		this.BOARDWIDTH = pieces.length;
 		this.BOARDHEIGHT = pieces[0].length;
 		this.currPlayer = p;
+		this.otherPlayer = other;
 		
 		this.board = new Piece[BOARDWIDTH][BOARDHEIGHT];
 		
@@ -46,6 +48,18 @@ public class Board {
 			}
 		}
 	}
+	
+	//Makes copy of board b
+		public Board(Board b) {
+			this(b.getPieces(), b.getCurrentPlayer(), b.getOtherPlayer());
+		}
+	
+	//Makes a copy of the current board and returns the board after placing a piece at width
+		public Board peekAtNextBoard(int width) {
+			Board newBoard = new Board(this);
+			newBoard.addPiece(width, currPlayer.getColor());
+			return newBoard;
+		}
 	
 	public boolean isDone() {
 		System.out.println("IN ISDONE....  "+checkWin());
@@ -131,7 +145,6 @@ public class Board {
 		for (int i = 0; i < BOARDHEIGHT; i++) {
 			if (squareIsEmpty(width, i)) {
 				board[width][i] = new Piece(color);
-				System.out.println("Added to " + width + " " + i);
 				return i;
 			}
 		}
@@ -149,22 +162,22 @@ public class Board {
 		return board[width][height].equals(emptyPiece);
 	}
 	
-	public void printBoard() {
-		
-	}
-	
 	public String toString() {
 		String output = "";
 		String newLine = System.getProperty("line.separator");
 		for (int h = BOARDHEIGHT -1; h >= 0; h--) {
 			for (int w = 0; w < BOARDWIDTH; w++) {
-				output += board[w][h].getColor() + " ";
+				output += board[w][h].getColor().toString() + " ";
 			}
 			output += newLine;
 		}
 		output += newLine;
 		
 		return output;
+	}
+	
+	public Piece[][] getPieces() {
+		return board;
 	}
 	
 	public int getBoardHeight() {
@@ -174,13 +187,24 @@ public class Board {
 	public int getBoardWidth() {
 		return BOARDWIDTH;
 	}
+	
+	public void setPlayers(Player curr, Player other) {
+		currPlayer = curr;
+		otherPlayer = other;
+	}
 
-	public void setCurrentPlayer(Player player) {
-		currPlayer = player;
+	public void switchPlayers() {
+		Player temp = currPlayer;
+		currPlayer = otherPlayer;
+		otherPlayer = temp;
 	}	
 	
 	public Player getCurrentPlayer() {
 		return currPlayer;
+	}
+	
+	public Player getOtherPlayer() {
+		return otherPlayer;
 	}
 	
 }

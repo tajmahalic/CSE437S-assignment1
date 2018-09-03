@@ -6,15 +6,12 @@ import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 
 import java.awt.Font;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 
 @SuppressWarnings("serial")
-public class WinGame extends JDialog {
+public class TiedGame extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
 	public String winner;
@@ -24,7 +21,7 @@ public class WinGame extends JDialog {
 	//add components to dialog
 	public void addtoDialog()
 	{
-		JLabel winnerLabel = new JLabel(winner+" won");
+		JLabel winnerLabel = new JLabel("It's a tied game!");
 		contentPanel.add(winnerLabel);
 		winnerLabel.setBounds(150,25,200,77);
 		winnerLabel.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -44,9 +41,8 @@ public class WinGame extends JDialog {
 	}
 	
 	//Create dialog
-	public WinGame(String winner, String playerName, Game theGame) {
+	public TiedGame(String playerName, Game theGame) {
 		this.theGame = theGame;
-		this.winner = winner;
 		this.playerName = playerName;
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(new BorderLayout());
@@ -58,28 +54,4 @@ public class WinGame extends JDialog {
 		}
 		addtoDialog();
 	}
-
-
-}
-
-class aNewGameButtonListener implements ActionListener {
-	String name;
-	JPanel panel;
-	boolean difficulty;
-	
-	aNewGameButtonListener(String name, Game game) {
-		this.name = name;
-		this.difficulty = game.getComputerDifficulty();
-	}
-  
-  public void actionPerformed(ActionEvent e) { 
-	  Connect4.closeConnect4();
-	  Game theGame = new Game(name, difficulty);
-	  theGame.newGame();
-	  Connect4 connect4Board = new Connect4(theGame);
-      connect4Board.createContents();
-	  JButton button = (JButton) e.getSource();
-      JDialog dialog = (JDialog) SwingUtilities.getRoot(button);
-      dialog.dispose();
-  }
 }

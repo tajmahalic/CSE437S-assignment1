@@ -22,7 +22,6 @@ public class Player {
 	}
 
 	public int pickPiece(Board b) {		
-		b.setCurrentPlayer(this);
 		
 		while (true) {
 		

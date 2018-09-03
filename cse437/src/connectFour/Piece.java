@@ -15,7 +15,7 @@ public class Piece {
 	}
 	
 	public Piece() {
-		
+		this.color = Color.BLACK;
 	}
 
 	public Color getColor() {

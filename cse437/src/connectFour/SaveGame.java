@@ -19,7 +19,7 @@ import javax.swing.border.EmptyBorder;
 public class SaveGame extends JDialog {
 
 	private final JPanel contentPanel = new JPanel();
-	Game theGame = new Game("");
+	Game theGame;
 	JFrame frame;
 	
 	//add components to dialog
@@ -64,7 +64,7 @@ public class SaveGame extends JDialog {
 
 class saveGameButtonListener implements ActionListener {
 	
-	Game theGame = new Game("");
+	Game theGame;
 	
 	saveGameButtonListener(Game theGame) {
 		this.theGame = theGame;

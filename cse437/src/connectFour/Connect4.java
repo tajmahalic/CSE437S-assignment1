@@ -11,6 +11,7 @@ import java.awt.event.WindowAdapter;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 import javax.swing.border.Border;
@@ -21,7 +22,7 @@ import java.awt.event.WindowEvent;
 
 
 public class Connect4 {
-	Game theGame = new Game("");
+	Game theGame;
 	static JFrame frame = new JFrame("connect four");
 	static JPanel panel = (JPanel) frame.getContentPane();
 	static int col = 0;
@@ -66,44 +67,44 @@ public class Connect4 {
 		switch (row) { 
 			case "0": 
 				if(col>=0) {
-					button.setBounds(0,462-(col)*77,100,77); 
+					button.setBounds(0,481-(col)*80,100,80); 
 					panel.add(button);
 				}
 				break;
 	  		case "1":
 	  			 if(col>=0) {
 	  				System.out.println("IN ONNNNNEEEEEEE.....");
-	  			 	button.setBounds(98,462-(col)*77,100,77); 
+	  			 	button.setBounds(98,481-(col)*80,100,80); 
 	  			 	panel.add(button);
 	  			 }
 	  			 break;
 	  		case "2":    
 	  			if(col>=0) {
-	  				button.setBounds(195,462-(col)*77,100,77); 
+	  				button.setBounds(195,481-(col)*80,100,80); 
 	  				panel.add(button);
 	  			}
 	  			break;
 	  		case "3": 
 	  			if(col>=0) {
-	  				button.setBounds(290,462-(col)*77,100,77); 
+	  				button.setBounds(290,481-(col)*80,100,80); 
 	  				panel.add(button);
 	  		    }
 	  			break;
 	  		case "4": 
 	  			if(col>=0) {
-	  				button.setBounds(388,462-(col)*77,100,77); 
+	  				button.setBounds(388,481-(col)*80,100,80); 
 	  				panel.add(button);
 	  			}
 	  			break;
 	  		case "5":
 	  			if(col>=0) {
-	  				button.setBounds(485,462-(col)*77,100,77); 
+	  				button.setBounds(485,481-(col)*80,100,80); 
 	  				panel.add(button);
 	  			}
 	  			break;
 	  		case "6": 
 	  			if(col>=0) {
-	  				button.setBounds(582,462-(col)*77,100,77); 
+	  				button.setBounds(582,481-(col)*80,100,80); 
 	  				panel.add(button);
 	  			}
 	  			break;
@@ -160,7 +161,7 @@ public class Connect4 {
 
 class ButtonListener implements ActionListener {
 	JPanel panel;
-	Game theGame = new Game("");
+	Game theGame;
 	String compChoiceName;
 	int col = 0;
 	ButtonListener(JPanel panel, Game theGame) {
@@ -172,7 +173,13 @@ class ButtonListener implements ActionListener {
 		JButton c = (JButton)e.getSource();
 		String choiceName = c.getText();
 		int choice = Integer.parseInt(choiceName);
-
+		
+		//If choice is invalid
+		if (theGame.gameBoard.checkIfColIsFull(choice)) {
+			JOptionPane.showMessageDialog(panel, "That space is full! Choose another.");
+			return;
+		}
+		
 		theGame.players.get(0).choice = choice;
 		theGame.runGame();
 	   
@@ -184,49 +191,49 @@ class ButtonListener implements ActionListener {
 			case "0": 
 		    	 col = 6-theGame.players.get(0).col;
 		    	 if(col>0) {
-		    		 button.setBounds(0,462+(col-6)*77,100,77); 
+		    		 button.setBounds(0,481+(col-6)*80,100,80); 
 		    		 panel.add(button);
 		    	 }
 		    	 break;
 		  	case "1": 
 		  		 col = 6-theGame.players.get(0).col;
 		  		 if(col>0) {
-		  			 button.setBounds(98,462+(col-6)*77,100,77); 
+		  			 button.setBounds(98,481+(col-6)*80,100,80); 
 		  			 panel.add(button);
 		  		 }
 		  		 break;
 		  	case "2": 
 		  		 col = 6-theGame.players.get(0).col;
 		  		 if(col>0) {
-		  			 button.setBounds(195,462+(col-6)*77,100,77); 
+		  			 button.setBounds(195,481+(col-6)*80,100,80); 
 		  			 panel.add(button);
 		  		 }
 		  		 break;
 		  	case "3": 
 		  		col = 6-theGame.players.get(0).col;
 		  		if(col>0) {
-		  			button.setBounds(290,462+(col-6)*77,100,77); 
+		  			button.setBounds(290,481+(col-6)*80,100,80); 
 		  			panel.add(button);
 		  		}
 		  		break;
 		  	case "4": 
 		  		col = 6-theGame.players.get(0).col;
 		  		if(col>0) {
-		  			button.setBounds(388,462+(col-6)*77,100,77); 
+		  			button.setBounds(388,481+(col-6)*80,100,80); 
 		  			panel.add(button);
 		  		}
 		  		break;
 		  	case "5":
 		  		col = 6-theGame.players.get(0).col;
 		  		if(col>0) {
-		  			button.setBounds(485,462+(col-6)*77,100,77); 
+		  			button.setBounds(485,481+(col-6)*80,100,80); 
 		  			panel.add(button);
 		  		}
 		  		break;
 		  	case "6": 
 		  		col = 6-theGame.players.get(0).col;
 		  		if(col>0) {
-		  			button.setBounds(582,462+(col-6)*77,100,77); 
+		  			button.setBounds(582,481+(col-6)*80,100,80); 
 		  			panel.add(button);
 		  		}
 		  		break;
