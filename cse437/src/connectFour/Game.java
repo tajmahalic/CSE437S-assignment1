@@ -27,6 +27,11 @@ public class Game {
 	int totalWins;
 	int numTurns;
 	
+	/**
+	 * Makes a new Game
+	 * @param name - Name of Player
+	 * @param isHard - Difficulty of Computer
+	 */
 	public Game(String name, boolean isHard) {
 		
 		this.computerIsHard = isHard;
@@ -34,7 +39,9 @@ public class Game {
 		this.name = name;
 	}
 	
-	//Runs a Round of the game
+	/**
+	 * Runs a single round of the game, checking for wins or a tie
+	 */
 	public void runGame() {
 		
 		for(int i = 0 ; i<2 ; i++) {
@@ -64,6 +71,9 @@ public class Game {
 		}
 	}
 	
+	/**
+	 * Creates a new Game with two players (1 human, 1 AI)
+	 */
 	public void newGame() {
 
 		gameBoard = new Board(7,6);
@@ -85,7 +95,11 @@ public class Game {
 	}
 	
 	
-	//if player wants to load a saved game, initialize board
+	/**
+	 * Loads a saved game
+	 * @param file - saved game file 
+	 * @return Whether it successfully loaded a file
+	 */
 	public boolean loadGame(File file){
 		
 		try (Stream<String> stream = Files.lines(Paths.get(file.getPath()))) {
@@ -125,8 +139,12 @@ public class Game {
 	}
 	
 	
-	
-	//saves game file
+
+	/**
+	 * Saves the current state of the game
+	 * @param file
+	 * @throws IOException
+	 */
 	public void saveGame(File file) throws IOException {
 		Path saveFile = Paths.get(file.getPath());
 		System.out.println();
@@ -143,8 +161,11 @@ public class Game {
 		Files.write(saveFile, data, Charset.forName("UTF-8"), StandardOpenOption.CREATE, StandardOpenOption.TRUNCATE_EXISTING);
 	}
 	
-	//alternate between computer and real player
-	public boolean nextTurn() {
+	/**
+	 * Increments the game. The current player makes their move
+	 * 
+	 */
+	public void nextTurn() {
 		
 		System.out.println();
 		Player currPlayer = players.get(numTurns % 2);
@@ -152,11 +173,13 @@ public class Game {
 		System.out.println("It is " + currPlayer.getName() + "'s turn.");
 		data.add(Integer.toString(currPlayer.pickPiece(gameBoard)));
 		System.out.println(gameBoard);
-		
-		
-		return true;
+
 	}	
 	
+	/**
+	 * Returns Computer Difficulty
+	 * @return boolean Computer Difficulty
+	 */
 	public boolean getComputerDifficulty() {
 		return computerIsHard;
 	}

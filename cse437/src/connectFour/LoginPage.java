@@ -16,7 +16,9 @@ import java.awt.Font;
 
 public class LoginPage {
 
-	// Create contents of the window.
+	/**
+	 * Create contents of the window.
+	 */
 	protected static void createContents() {	
 		JFrame frame = new JFrame("Login Page");
 		JPanel panel = (JPanel) frame.getContentPane();
@@ -76,6 +78,10 @@ public class LoginPage {
 	
 }
 
+/**
+ * Button For Computer Easy Mode
+ *
+ */
 class easyGameButtonListener implements ActionListener {
 	JFrame frame;
 	TextField text;
@@ -96,6 +102,10 @@ class easyGameButtonListener implements ActionListener {
   }
 }
 
+/**
+ * Button For Computer Hard Mode
+ *
+ */
 class hardGameButtonListener implements ActionListener {
 	JFrame frame;
 	TextField text;
@@ -116,6 +126,10 @@ class hardGameButtonListener implements ActionListener {
   }
 }
 
+/**
+ * Button For Loading a Game
+ *
+ */
 class loadGameButtonListener implements ActionListener {
 	JFrame frame;
 	TextField text;

@@ -22,7 +22,9 @@ public class SaveGame extends JDialog {
 	Game theGame;
 	JFrame frame;
 	
-	//add components to dialog
+	/**
+	 * Add components to dialog
+	 */
 	public void addtoDialog()
 	{
 		JLabel saveLabel = new JLabel("Do you want to save the game?");
@@ -45,7 +47,11 @@ public class SaveGame extends JDialog {
 		
 	}
 
-	//create the dialog
+	/**
+	 * Create the dialog
+	 * @param theGame
+	 * @param frame
+	 */
 	public SaveGame(Game theGame, JFrame frame) {
 		this.frame = frame;
 		this.theGame = theGame;
