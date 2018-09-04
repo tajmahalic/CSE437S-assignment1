@@ -18,7 +18,9 @@ public class TiedGame extends JDialog {
 	public String playerName;
 	private Game theGame;
 	
-	//add components to dialog
+	/**
+	 * Add components to dialog
+	 */
 	public void addtoDialog()
 	{
 		JLabel winnerLabel = new JLabel("It's a tied game!");
@@ -40,7 +42,11 @@ public class TiedGame extends JDialog {
 		quitButton.addActionListener(new quitGameButtonListener());
 	}
 	
-	//Create dialog
+	/**
+	 * Create dialog
+	 * @param playerName
+	 * @param theGame
+	 */
 	public TiedGame(String playerName, Game theGame) {
 		this.theGame = theGame;
 		this.playerName = playerName;

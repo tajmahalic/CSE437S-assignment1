@@ -31,7 +31,9 @@ public class Connect4 {
 		this.theGame = theGame;
 	}
 	
-	//Close connect4 frame when a new game is loaded
+	/**
+	 * Close connect4 frame when a new game is loaded
+	 */
 	public static void closeConnect4()
 	{
 		panel.removeAll();
@@ -40,7 +42,9 @@ public class Connect4 {
 		panel.revalidate();
 	}
 	
-	//Disable connect4 frame when another dialog is opens
+	/**
+	 * Disable connect4 frame when another dialog is opens
+	 */
 	public static void disableConnect4()
 	{
 		Component[] component = panel.getComponents();
@@ -59,7 +63,12 @@ public class Connect4 {
 
 
 	
-	//fill connect4 frame when a game is loaded from a file
+	/**
+	 * fill connect4 frame when a game is loaded from a file
+	 * @param row
+	 * @param col
+	 * @param color
+	 */
 	public static void fillConnect4(String row, int col, Color color) {
 		JButton button = new JButton("");
 		button.setBackground(color);
@@ -115,7 +124,9 @@ public class Connect4 {
 	}
 	
 
-	//Create contents of the window
+	/**
+	 * Create contents of the window
+	 */
 	protected void createContents() {
 		 int BOARDWIDTH = 7;
 		 int BOARDHEIGHT = 7;
@@ -158,7 +169,9 @@ public class Connect4 {
 	}
 }
 
-
+/**
+ * Button Listener for player move choices
+ */
 class ButtonListener implements ActionListener {
 	JPanel panel;
 	Game theGame;

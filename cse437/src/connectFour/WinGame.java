@@ -21,7 +21,9 @@ public class WinGame extends JDialog {
 	public String playerName;
 	private Game theGame;
 	
-	//add components to dialog
+	/**
+	 * Adds components to dialog
+	 */
 	public void addtoDialog()
 	{
 		JLabel winnerLabel = new JLabel(winner+" won");
@@ -43,7 +45,12 @@ public class WinGame extends JDialog {
 		quitButton.addActionListener(new quitGameButtonListener());
 	}
 	
-	//Create dialog
+	/**
+	 * Creates win game dialog box
+	 * @param winner
+	 * @param playerName
+	 * @param theGame
+	 */
 	public WinGame(String winner, String playerName, Game theGame) {
 		this.theGame = theGame;
 		this.winner = winner;

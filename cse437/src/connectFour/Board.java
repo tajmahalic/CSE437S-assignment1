@@ -10,6 +10,11 @@ public class Board {
 	private Player currPlayer;
 	private Player otherPlayer;
 	
+	/**
+	 * Creates a new board
+	 * @param width
+	 * @param height
+	 */
 	public Board(int width, int height) {
 		
 		this.BOARDWIDTH = width;
@@ -33,7 +38,12 @@ public class Board {
 		
 	}
 	
-	//Makes board from piece array and current player p
+	/**
+	 * Creates new Board from piece array and sets players
+	 * @param pieces
+	 * @param p
+	 * @param other
+	 */
 	public Board(Piece[][] pieces, Player p, Player other) {
 		this.BOARDWIDTH = pieces.length;
 		this.BOARDHEIGHT = pieces[0].length;
@@ -49,23 +59,38 @@ public class Board {
 		}
 	}
 	
-	//Makes copy of board b
+	/**
+	 * Copy Constructor for new Board
+	 * @param b
+	 */
 		public Board(Board b) {
 			this(b.getPieces(), b.getCurrentPlayer(), b.getOtherPlayer());
 		}
 	
-	//Makes a copy of the current board and returns the board after placing a piece at width
+	/**
+	 * Returns a board that is incremented by one move
+	 * @param width
+	 * @return nextBoard
+	 */
 		public Board peekAtNextBoard(int width) {
 			Board newBoard = new Board(this);
 			newBoard.addPiece(width, currPlayer.getColor());
 			return newBoard;
 		}
 	
+	/**
+	 * Checks to see if game is done
+	 * @return bool
+	 */
 	public boolean isDone() {
 		System.out.println("IN ISDONE....  "+checkWin());
 		return checkWin() || checkTie();
 	}
 	
+	/**
+	 * Checks for tie
+	 * @return
+	 */
 	public boolean checkTie() {
 		
 		for (int i = 0; i < BOARDWIDTH; i++) {
@@ -80,7 +105,10 @@ public class Board {
 		return true;
 	}
 	
-	//check to see if any colors make a line of four (can be diagonal)
+	/**
+	 * Check to see if any colors make a line of four (can be diagonal)
+	 * @return bool
+	 */
 	public boolean checkWin() {
 		
 		for (int w = 0; w < BOARDWIDTH; w++) {
@@ -127,6 +155,10 @@ public class Board {
 		return false;
 	}
 	
+	/**
+	 * Check to see if the board is completely full
+	 * @return bool
+	 */
 	public boolean boardIsFull() {
 		
 		for (int i = 0; i < BOARDWIDTH; i++) {
@@ -139,7 +171,12 @@ public class Board {
 		return true;
 	}
 	
-	//just drop the piece into the board
+	/**
+	 * Adds a piece to the current board. Returns the location of the new piece
+	 * @param width
+	 * @param color
+	 * @return int
+	 */
 	public int addPiece(int width, Color color) {
 		
 		for (int i = 0; i < BOARDHEIGHT; i++) {
@@ -151,10 +188,21 @@ public class Board {
 		return -1;
 	}
 	
+	/**
+	 * Checks if column is full of pieces
+	 * @param width
+	 * @return boolean
+	 */
 	public boolean checkIfColIsFull(int width) {
 		return !squareIsEmpty(width, BOARDHEIGHT-1);	
 	}
 	
+	/**
+	 * Checks to see if a given square has a piece in it
+	 * @param width
+	 * @param height
+	 * @return boolean
+	 */
 	public boolean squareIsEmpty(int width, int height) {
 		
 		Piece emptyPiece = new Piece();
@@ -162,6 +210,9 @@ public class Board {
 		return board[width][height].equals(emptyPiece);
 	}
 	
+	/**
+	 * Prints out game board
+	 */
 	public String toString() {
 		String output = "";
 		String newLine = System.getProperty("line.separator");
@@ -176,33 +227,60 @@ public class Board {
 		return output;
 	}
 	
+	/**
+	 * 
+	 * @return Piece[][]
+	 */
 	public Piece[][] getPieces() {
 		return board;
 	}
 	
+	/**
+	 * 
+	 * @return int board height
+	 */
 	public int getBoardHeight() {
 		return BOARDHEIGHT;
 	}
 	
+	/**
+	 * @return int board width
+	 */
 	public int getBoardWidth() {
 		return BOARDWIDTH;
 	}
 	
+	/**
+	 * Set the players for the board
+	 * @param current player
+	 * @param other player
+	 */
 	public void setPlayers(Player curr, Player other) {
 		currPlayer = curr;
 		otherPlayer = other;
 	}
 
+	/**
+	 * Switches the current and other players
+	 */
 	public void switchPlayers() {
 		Player temp = currPlayer;
 		currPlayer = otherPlayer;
 		otherPlayer = temp;
 	}	
 	
+	/**
+	 * 
+	 * @return current player
+	 */
 	public Player getCurrentPlayer() {
 		return currPlayer;
 	}
 	
+	/**
+	 * 
+	 * @return other player
+	 */
 	public Player getOtherPlayer() {
 		return otherPlayer;
 	}

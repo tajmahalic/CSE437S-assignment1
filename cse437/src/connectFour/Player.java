@@ -9,18 +9,22 @@ public class Player {
 	protected int choice;
 	protected int col;
 	
+	/**
+	 * Creates a new Player
+	 * @param String name 
+	 * @param Color color
+	 */
 	public Player(String name, Color color)
 	{
 		this.name = name;
 		this.color = color;
 	}
 	
-	public Player(String name, Color color, int choice) {
-		this.name = name;
-		this.color = color;
-		this.choice = choice;
-	}
-
+	/**
+	 * Player chooses a location to place the next piece
+	 * @param Board b - Current Game Board
+	 * @return int - Location of player choice
+	 */
 	public int pickPiece(Board b) {		
 		
 		while (true) {
@@ -45,10 +49,18 @@ public class Player {
 		return choice;
 	}
 	
+	/**
+	 * 
+	 * @return player Color
+	 */
 	public Color getColor() {
 		return color;
 	}
 	
+	/**
+	 * 
+	 * @return player Name
+	 */
 	public String getName() {
 		return name;
 	}
