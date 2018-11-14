@@ -1,4 +1,4 @@
-# CSE437S-assignment1
+# Connect-4-Demo
 Tahj, Selam and Reis worked on this project.
 
 The project is a 1 player Connect 4 game in which you play against the computer. The computer has two difficulty settings, easy and hard. 
